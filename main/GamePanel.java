@@ -1,5 +1,7 @@
 package main;
 
+import entity.*;
+
 import java.awt.Graphics2D;
 import java.awt.Graphics;
 import java.awt.Color;
@@ -14,7 +16,7 @@ public class GamePanel extends JPanel implements Runnable{
       final int scale = 3;
       int FPS = 30;     
 
-      final int tileSize = originalTileSize*scale; //48x48 tile
+      public final int tileSize = originalTileSize*scale; //48x48 tile
       final int maxScreenCol = 16;
       final int maxScreenRow = 12;
       final int screenWidth = tileSize * maxScreenCol;
@@ -22,11 +24,12 @@ public class GamePanel extends JPanel implements Runnable{
 
       KeyHandler keyH = new KeyHandler();
       Thread gameThread;
+      Enemy ghost = new Enemy(this,keyH);
 
       //spawn point
       int playerX = 100;
       int playerY = 100;
-      int playerSpeed = 4;
+      int playerSpeed = 1;
 
       public GamePanel() {
 
@@ -50,7 +53,6 @@ public class GamePanel extends JPanel implements Runnable{
             long lastTime = System.nanoTime();
             long currentTime;
             //Game loop goes here
-
             while(gameThread != null) {
                   //Update and Draw (according to updated info)
                   currentTime = System.nanoTime();
@@ -69,38 +71,7 @@ public class GamePanel extends JPanel implements Runnable{
       }
 
       public void update() {
-            if(keyH.upPressed&&keyH.leftPressed)
-            {
-                  playerY -= playerSpeed;
-                  playerX -= playerSpeed;
-            }
-            else if(keyH.upPressed&&keyH.rightPressed)
-            {
-                  playerY -= playerSpeed;
-                  playerX += playerSpeed;
-            }
-            else if(keyH.downPressed&&keyH.leftPressed)
-            {
-                  playerY += playerSpeed;
-                  playerX -= playerSpeed;
-            }
-            else if(keyH.downPressed&&keyH.rightPressed)
-            {
-                  playerY += playerSpeed;
-                  playerX += playerSpeed;
-            }
-            else if(keyH.upPressed) {
-                  playerY -= playerSpeed;
-            }
-            else if(keyH.downPressed) {
-                  playerY += playerSpeed;
-            }
-            else if(keyH.leftPressed) {
-                  playerX -= playerSpeed;
-            }
-            else if(keyH.rightPressed) {
-                  playerX += playerSpeed;
-            }
+            ghost.update();
       }
       public void paintComponent(Graphics g) {
 
@@ -108,9 +79,7 @@ public class GamePanel extends JPanel implements Runnable{
 
             Graphics2D g2 = (Graphics2D)g;
 
-            g2.setColor(Color.white);
-
-            g2.fillRect(playerX, playerY, tileSize, tileSize);
+            ghost.draw(g2);
 
             g2.dispose();
 
