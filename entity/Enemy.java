@@ -1,10 +1,10 @@
 package entity;
 
 import java.awt.Graphics2D;
-import java.io.File;
-import java.io.IOException;
+//import java.io.File;
+//import java.io.IOException;
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
+//import javax.imageio.ImageIO;
 
 import main.GamePanel;
 import main.KeyHandler;
@@ -13,19 +13,27 @@ public class Enemy extends Entity{
       
       GamePanel gp;
       KeyHandler keyH;
-
       public Enemy(GamePanel gp, KeyHandler keyH) {
             this.gp = gp;
             this.keyH = keyH;
             setDefaultValues();
-            getPlayerImage();
+            BufferedImage img1 = spriteSheet.grabImage(1,1,16,16);
+            BufferedImage img2 = spriteSheet.grabImage(2,1,16,16);
+            BufferedImage img3 = spriteSheet.grabImage(3,1,16,16); 
+            
+            images.add(img1);
+            images.add(img2);
+            images.add(img3);
+
+            //getPlayerImage();
       }
       public void setDefaultValues() {
             x = 200;
             y = 200;
-            speed = 2;
+            speed = 10;
             imageNumber = 1;
       }
+      /** 
       public void getPlayerImage() {
             try {
                   right1 = ImageIO.read(new File("res/enemy/ghost1.png"));
@@ -34,7 +42,7 @@ public class Enemy extends Entity{
                   e.printStackTrace();
             }
       }
-
+      */
       public void update() {
 
             if(keyH.upPressed&&keyH.leftPressed)
@@ -57,7 +65,7 @@ public class Enemy extends Entity{
                   y += speed;
                   x += speed;
             }
-            else if(keyH.upPressed) {
+            else if(keyH.upPressed&&y>=4) {
                   y -= speed;
             }
             else if(keyH.downPressed) {
@@ -74,13 +82,17 @@ public class Enemy extends Entity{
             BufferedImage image = null;
             switch(imageNumber) {
             case 1:
-                  image = right1;
+                  image = images.get(0);
                   imageNumber = 2;
                   break;
             case 2:
-                  image = right2;
-                  imageNumber = 1;
+                  image = images.get(1);
+                  imageNumber = 3;
                   break;
+            case 3:
+                  image = images.get(2);
+                  imageNumber = 1;
+                  break;      
             }
             g2.drawImage(image, x, y, gp.tileSize, gp.tileSize, null);
       }

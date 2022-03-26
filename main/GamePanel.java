@@ -14,7 +14,7 @@ public class GamePanel extends JPanel implements Runnable{
       //Screen Settings
       final int originalTileSize = 16;
       final int scale = 3;
-      int FPS = 30;     
+      int FPS = 5;     
 
       public final int tileSize = originalTileSize*scale; //48x48 tile
       final int maxScreenCol = 16;
@@ -34,7 +34,7 @@ public class GamePanel extends JPanel implements Runnable{
       public GamePanel() {
 
             this.setPreferredSize(new Dimension(screenWidth,screenHeight));
-            this.setBackground(Color.BLACK);
+            this.setBackground(Color.WHITE);
             this.setDoubleBuffered(true);
             this.addKeyListener(keyH);
             this.setFocusable(true);
@@ -48,7 +48,7 @@ public class GamePanel extends JPanel implements Runnable{
       @Override
       public void run() {
             //When thread starts this method will be called automatically
-            double drawInterval = 100000000/FPS;
+            double drawInterval = 1000000000/FPS;
             double delta = 0;
             long lastTime = System.nanoTime();
             long currentTime;
